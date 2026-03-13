@@ -1,0 +1,18 @@
+# Core
+openai>=1.30.0
+pyyaml>=6.0
+requests>=2.31.0
+
+# Resume parsing
+pdfplumber>=0.10.0
+python-docx>=1.1.0
+
+# Local vector DB + embeddings
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+
+# UI
+streamlit>=1.35.0
+
+# Dev / packaging
+pyinstaller>=6.6.0
