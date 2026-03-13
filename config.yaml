@@ -1,0 +1,130 @@
+# ─────────────────────────────────────────────────────────
+#  TA Automation — Recruiter Config Template
+#
+#  HOW TO USE:
+#    Copy this file → config.local.yaml
+#    Fill in your keys in config.local.yaml
+#    NEVER commit config.local.yaml
+#
+#  Source resilience:
+#    Set enabled: false (or leave keys blank) for any source
+#    you don't use. The app runs fine with 1, 2, or all 3.
+# ─────────────────────────────────────────────────────────
+
+recruiter:
+  name: "Your Name"
+  email: "you@company.com"
+
+# ─────────────────────────────────────────────────────────
+#  LLM Backend
+#  Switch provider: "openai" → "ollama" with no code changes
+# ─────────────────────────────────────────────────────────
+llm:
+  provider: "openai"          # "openai" | "ollama"
+
+  openai:
+    api_key: "sk-..."                       # Your OpenAI API key
+    base_url: "https://api.openai.com/v1"   # Leave as-is
+    model: "gpt-4o"
+    temperature: 0.2
+    max_tokens: 1000
+
+  ollama:
+    api_key: "ollama"                           # Ignored by Ollama, but required by SDK
+    base_url: "http://192.168.1.50:11434/v1"    # LAN IP of your Ollama server
+    model: "llama3.1:8b"
+    temperature: 0.2
+    max_tokens: 1000
+
+# ─────────────────────────────────────────────────────────
+#  Source: Naukri
+#  Leave enabled: false if you don't have API access.
+# ─────────────────────────────────────────────────────────
+naukri:
+  enabled: true
+  api_key: "naukri-api-key-here"
+  client_id: "your-naukri-client-id"
+  client_secret: "your-naukri-client-secret"
+  base_url: "https://www.naukri.com/api/v1"
+  max_results_per_search: 50
+  request_delay_seconds: 2       # Be polite to their servers
+
+# ─────────────────────────────────────────────────────────
+#  Source: LinkedIn
+#  Requires LinkedIn Recruiter API (partner/enterprise access).
+#  Leave enabled: false if you don't have access.
+# ─────────────────────────────────────────────────────────
+linkedin:
+  enabled: true
+  client_id: "your-linkedin-client-id"
+  client_secret: "your-linkedin-client-secret"
+  access_token: "your-linkedin-access-token"
+  base_url: "https://api.linkedin.com/v2"
+  max_results_per_search: 50
+  request_delay_seconds: 3
+
+# ─────────────────────────────────────────────────────────
+#  Source: Resume Directory
+#
+#  path accepts a single string OR a list of paths.
+#  Missing paths are skipped with a warning; others still run.
+#
+#  SINGLE PATH
+#    path: "./resumes"
+#
+#  MULTIPLE PATHS (mix local, OneDrive, NAS — all fine)
+#    path:
+#      - "./resumes"
+#      - "./my-resumes"
+#      - "C:/Users/YourName/OneDrive/Resumes"
+#      - "\\\\server\\share\\Resumes"
+#
+#  ONEDRIVE (must be running + folder synced)
+#    Windows: "C:/Users/YourName/OneDrive/Resumes"
+#    Mac:     "/Users/YourName/OneDrive - CompanyName/Resumes"
+#
+#  GOOGLE DRIVE (Google Drive for Desktop must be running)
+#    Windows: "G:/My Drive/Resumes"
+#    Mac:     "/Volumes/GoogleDrive/My Drive/Resumes"
+#
+#  NETWORK SHARE / NAS
+#    Windows: "\\\\server\\share\\Resumes"
+#    Mac:     "/Volumes/NAS/Resumes"
+#
+#  Duplicate files found in multiple paths are scanned once.
+#  If ALL paths are missing, the source is skipped entirely.
+# ─────────────────────────────────────────────────────────
+resume_directory:
+  enabled: true
+  path:
+    - "./resumes"              # ← add or remove paths as needed
+    - "./my-resumes"
+  formats: ["pdf", "docx", "doc"]
+  force_reindex: false         # true = re-parse all files on every run
+
+# ─────────────────────────────────────────────────────────
+#  Local Vector Database  (stays on this machine)
+# ─────────────────────────────────────────────────────────
+vector_db:
+  provider: "chromadb"
+  persist_directory: "./data/chroma"
+  collection_name: "candidates"
+  embedding_model: "all-MiniLM-L6-v2"    # Runs locally, no API needed
+
+# ─────────────────────────────────────────────────────────
+#  Scoring Weights  (must sum to 1.0)
+# ─────────────────────────────────────────────────────────
+scoring:
+  semantic_skill_match: 0.40
+  required_skills_coverage: 0.25
+  experience_fit: 0.20
+  seniority_match: 0.10
+  profile_recency: 0.05
+  top_n_results: 10
+
+# ─────────────────────────────────────────────────────────
+#  Application
+# ─────────────────────────────────────────────────────────
+app:
+  log_level: "INFO"   # DEBUG | INFO | WARNING | ERROR
+  ui: "streamlit"

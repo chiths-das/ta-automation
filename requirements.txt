@@ -1,18 +1,18 @@
-# Core
+# ── Core ──────────────────────────────────────
 openai>=1.30.0
 pyyaml>=6.0
 requests>=2.31.0
 
-# Resume parsing
-pdfplumber>=0.10.0
-python-docx>=1.1.0
+# ── Resume parsing ─────────────────────────────
+pdfplumber>=0.10.0         # PDF text extraction
+python-docx>=1.1.0         # DOCX parsing
 
-# Local vector DB + embeddings
+# ── Local vector DB + embeddings ──────────────
 chromadb>=0.5.0
 sentence-transformers>=3.0.0
 
-# UI
+# ── UI ────────────────────────────────────────
 streamlit>=1.35.0
 
-# Dev / packaging
-pyinstaller>=6.6.0
+# ── Dev / packaging ───────────────────────────
+pyinstaller>=6.6.0         # For distribution builds
